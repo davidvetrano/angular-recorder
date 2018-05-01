@@ -326,14 +326,20 @@ angular.module('angularAudioRecorder.services')
 
       service.$html5AudioProps = html5AudioProps;
 
+      var isInitialized = false;
       var provider = {
         $get: ['recorderUtils',
           function (recorderUtils) {
             utils = recorderUtils;
-            init();
             return service;
           }
         ],
+        init: function() {
+            if (!isInitialized) {
+                init();
+                isInitialized = true;
+            }
+        },
         forceSwf: function (value) {
           forceSwf = value;
           return provider;
