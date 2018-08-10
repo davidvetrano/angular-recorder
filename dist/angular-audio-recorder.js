@@ -15,20 +15,14 @@ angular.module('angularAudioRecorder', [
   'angularAudioRecorder.directives'
 ]);
 angular.module('angularAudioRecorder.config', [])
-  .constant('recorderScriptUrl', (function () {
-    var scripts = document.getElementsByTagName('script');
-    var myUrl = scripts[scripts.length - 1].getAttribute('src');
-    var path = myUrl.substr(0, myUrl.lastIndexOf('/') + 1);
-    var a = document.createElement('a');
-    a.href = path;
-    return a.href;
-  }()))
+  .constant('recorderScriptUrl', '/')
   .constant('recorderPlaybackStatus', {
     STOPPED: 0,
     PLAYING: 1,
     PAUSED: 2
   })
 ;
+
 angular.module('angularAudioRecorder.controllers', [
   'angularAudioRecorder.config',
   'angularAudioRecorder.services'
@@ -1683,22 +1677,10 @@ angular.module('angularAudioRecorder.services')
     };
   };
 
-  var SCRIPT_BASE = (function () {
-    var scripts = document.getElementsByTagName('script');
-    var myUrl = scripts[scripts.length - 1].getAttribute('src');
-    var path = myUrl.substr(0, myUrl.lastIndexOf('/') + 1);
-    if (path && !path.match(/:\/\//)) {
-      var a = document.createElement('a');
-      a.href = path;
-      return a.href;
-    }
-    return path;
-  }());
-
   var MP3Converter = function (config) {
 
     config = config || {};
-    config.lameJsUrl = config.lameJsUrl || (SCRIPT_BASE + '/lame.min.js');
+    config.lameJsUrl = config.lameJsUrl || '/lame.min.js';
     var busy = false;
     var mp3Worker = MP3ConversionWorker.toWorker(config);
 
@@ -1778,6 +1760,7 @@ angular.module('angularAudioRecorder.services')
 
   win.MP3Converter = MP3Converter;
 })(window);
+
 (function (win) {
   'use strict';
 
